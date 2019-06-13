@@ -6,10 +6,7 @@
 package views.main;
 
 import java.awt.Dimension;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -134,15 +131,14 @@ public class Main_Frame extends javax.swing.JFrame {
     private void initComponents() {
 
         p_south = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        b_go = new javax.swing.JButton();
-        cb_classes = new javax.swing.JComboBox<>();
-        b_next = new javax.swing.JButton();
-        b_prev = new javax.swing.JButton();
-        tf_rootdir = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         b_finalize = new javax.swing.JButton();
         b_load = new javax.swing.JButton();
+        tf_rootdir = new javax.swing.JTextField();
+        cb_classes = new javax.swing.JComboBox<>();
+        b_go = new javax.swing.JButton();
+        b_next = new javax.swing.JButton();
+        b_prev = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         mn_file = new javax.swing.JMenu();
         mnu_load_database = new javax.swing.JMenuItem();
@@ -152,6 +148,32 @@ public class Main_Frame extends javax.swing.JFrame {
         mnu_about = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("File Settings"));
+
+        b_finalize.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        b_finalize.setText("Finalize");
+        b_finalize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_finalizeActionPerformed(evt);
+            }
+        });
+
+        b_load.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        b_load.setText("Load CSV");
+        b_load.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_loadActionPerformed(evt);
+            }
+        });
+
+        tf_rootdir.setText("/Users/josephrobinson/WORK/iris-py/pytorch-face/data/processed/lfw");
+        tf_rootdir.setToolTipText("");
+        tf_rootdir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_rootdirActionPerformed(evt);
+            }
+        });
 
         b_go.setText("Go!");
         b_go.setToolTipText("Press to load clustered faces for FID selected in dropdown menu.");
@@ -175,64 +197,6 @@ public class Main_Frame extends javax.swing.JFrame {
             }
         });
 
-        tf_rootdir.setText("/Users/josephrobinson/WORK/iris-py/pytorch-face/data/processed/lfw");
-        tf_rootdir.setToolTipText("");
-        tf_rootdir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_rootdirActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(215, 215, 215)
-                .addComponent(b_prev)
-                .addGap(96, 96, 96)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(tf_rootdir, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_classes, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(b_go)
-                .addGap(69, 69, 69)
-                .addComponent(b_next)
-                .addGap(196, 196, 196))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tf_rootdir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(b_go, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(2, 2, 2)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(b_next, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(b_prev, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_classes, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
-        );
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("File Settings"));
-
-        b_finalize.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        b_finalize.setText("Finalize");
-        b_finalize.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_finalizeActionPerformed(evt);
-            }
-        });
-
-        b_load.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        b_load.setText("Load CSV");
-        b_load.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_loadActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -243,13 +207,36 @@ public class Main_Frame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(b_finalize, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(150, 150, 150))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(tf_rootdir, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(b_go)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(b_prev)
+                .addGap(80, 80, 80)
+                .addComponent(cb_classes, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(b_next)
+                .addGap(392, 392, 392))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(b_load, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(b_load, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
                     .addComponent(b_finalize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tf_rootdir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(b_go, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cb_classes, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(b_next, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(b_prev, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -258,17 +245,13 @@ public class Main_Frame extends javax.swing.JFrame {
         p_southLayout.setHorizontalGroup(
             p_southLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, p_southLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
         );
         p_southLayout.setVerticalGroup(
             p_southLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(p_southLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
 
         mn_file.setText("File");
@@ -483,7 +466,6 @@ public class Main_Frame extends javax.swing.JFrame {
     private javax.swing.JButton b_prev;
     private javax.swing.JComboBox<String> cb_classes;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JMenu mn_file;
     private javax.swing.JMenu mn_help;
