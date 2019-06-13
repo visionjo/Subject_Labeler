@@ -7,29 +7,20 @@ package components;
 
 import javax.swing.JButton;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
-import views.main.Main_Frame;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Vector;
-
-import components.HSLColor;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.imageio.ImageIO;
@@ -48,8 +39,12 @@ public class FaceImage extends JButton {
     static final int BORDER_THICKNESS = 3;
     static final int IMWIDTH = 75;
     static final int IMHEIGHT = 75;
-    Image imface;
-
+    
+    Image face;     // face image
+    
+    // image metadatas
+    
+    Metadata meta;
     // sample name
     String impath;
 
@@ -59,6 +54,7 @@ public class FaceImage extends JButton {
     // the cluster in its fid
     float confidence;
 
+    // is image loaded in memory (i.e., stored in var face)
     boolean isloaded = false;
     HSLColor border_color;
     // Borders
@@ -67,10 +63,8 @@ public class FaceImage extends JButton {
 
     TitledBorder focused;
 
-    FaceImage(String path, int cluster, float score, String ref) {
-        this.impath = path;
-        this.cluster_id = cluster;
-        this.confidence = score;
+    FaceImage(Metadata meta) {
+        this.meta = meta;
 
         this.loadImage();
         this.initComponents();
@@ -79,14 +73,15 @@ public class FaceImage extends JButton {
 
     private void initComponents() {
 
-        // set color to paint border
-        float hue = this.HUE_ULIMIT * this.confidence;
-        this.border_color = new HSLColor(hue);
+        //        // set color to paint border
+        //        float hue = this.HUE_ULIMIT * this.confidence;
+        //        this.border_color = new HSLColor(hue);
+        
         // create and add border to image icon to represent confidence
         this.focused = BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(border_color.getRGB(), this.BORDER_THICKNESS));
+                BorderFactory.createLineBorder(Color.GREEN, this.BORDER_THICKNESS));
 
-        this.setIcon(new ImageIcon(this.imface));
+        this.setIcon(new ImageIcon(this.face));
 
         // Set the border with the name of the sample
         this.setBorder(this.noFocus);
@@ -118,43 +113,42 @@ public class FaceImage extends JButton {
         });
     }
 
+    private void scaleImage() {
+        /**
+         * Resizes an image using a Graphics2D object backed by a BufferedImage.
+         */
+        if (!this.isloaded) {
+            return;
+        }
 
-    private void scaleImage(){
-    /**
-     * Resizes an image using a Graphics2D object backed by a BufferedImage.
-     */
-    if(!this.isloaded)
-        return;
-   
-    BufferedImage resizedImg = new BufferedImage(this.IMWIDTH, this.IMHEIGHT, 
-            BufferedImage.TYPE_INT_RGB);
-    Graphics2D g2 = resizedImg.createGraphics();
-    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
-           RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-    g2.drawImage(this.imface, 0, 0, this.IMWIDTH, this.IMHEIGHT, null);
-    g2.dispose();
-    this.imface = resizedImg;
+        BufferedImage resizedImg = new BufferedImage(this.IMWIDTH, this.IMHEIGHT,
+                BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(this.face, 0, 0, this.IMWIDTH, this.IMHEIGHT, null);
+        g2.dispose();
+        this.face = resizedImg;
     }
+
     private final void loadImage() {
         /**
          * Load image and rescale to proper size
          */
         BufferedImage img = null;
         Sample samp;
-            try {
-                // read the image
-                img = ImageIO.read(new File(this.impath));
-                this.isloaded = true;
-            } 
-            catch (FileNotFoundException e) {
-                 System.out.println(e.getMessage());
-                this.isloaded = false;
-            } 
-            catch (IOException e) {
-                 System.out.println(e.getMessage());
-                this.isloaded = false;
-            }
-            this.scaleImage();
+        try {
+            // read the image
+            img = ImageIO.read(new File(this.meta.getPath()));
+            this.isloaded = true;
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+            this.isloaded = false;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            this.isloaded = false;
         }
-  
+        this.scaleImage();
+    }
+
 }
