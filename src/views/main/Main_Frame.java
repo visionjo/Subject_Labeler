@@ -13,16 +13,14 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 import components.Configurations;
+import components.GalleryPanel;
 import components.Parse_FID_LUT;
 import components.Parse_Face_LUT;
 import views.About;
-import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import components.Sample_LUT;
-import views.ASampleView;
-import views.ClusterGrid;
 import views.ImageGallery;
 import views.Sample;
 import java.io.FileFilter;
@@ -38,19 +36,20 @@ import components.Parse_Cluster_LUT;
  * @author jrobby
  */
 public class Main_Frame extends javax.swing.JFrame {
-        
+
     // <editor-fold defaultstate="collapsed" desc="Global Vars">
-    Configurations configs; 
-    public HashMap<Integer, String>   face_lut;
-    public HashMap<Integer, String>   fid_lut;
-    public HashMap<Integer, Vector<String>>   cluster_lut;
-    public Sample_LUT   sample_ids_lut; // sample ID to FID
+    Configurations configs;
+    public HashMap<Integer, String> face_lut;
+    public HashMap<Integer, String> fid_lut;
+    public HashMap<Integer, ArrayList<String>> cluster_lut;
+    public Sample_LUT sample_ids_lut; // sample ID to FID
     String c_subject; // current subjects
     String file_csv;
     ImageGallery ig;
-    
+    GalleryPanel panel;
+    JFrame frame;
     //</editor-fold>
-       
+
     /**
      * Main_Frame(): Creates new form Main_Frame
      */
@@ -59,21 +58,18 @@ public class Main_Frame extends javax.swing.JFrame {
         configs = new Configurations();
         initComponents();
 //        get_luts();s
-        
+
 //        sample_ids_lut = new Sample_LUT(configs.f_sample_lut, configs.do_debug);
 //        sample_ids_lut.readLUT();
-        
         this.setName("Main_Frame");
-        
+
     }
     //</editor-fold>
-    
-       
+
     /**
      * Method to read in both FID and FaceID LUTs.
      */
-    private void get_luts()
-    {       
+    private void get_luts() {
         Parse_Face_LUT pface = new Parse_Face_LUT(configs.f_face_lut, configs.do_debug);
         pface.readLUT();
         face_lut = pface.getLUT();
@@ -81,27 +77,28 @@ public class Main_Frame extends javax.swing.JFrame {
         Parse_FID_LUT pfid = new Parse_FID_LUT(configs.f_fid_lut, configs.do_debug);
         pfid.readLUT();
         fid_lut = pfid.getLUT();
-        
+
         Parse_Cluster_LUT pcluster = new Parse_Cluster_LUT(configs.f_cluster_ids,
                 configs.do_debug);
         pcluster.readLUT();
         cluster_lut = pcluster.getLUT();
-        
+
         set_window_state();
     }
-       
-    private void set_window_state() {                                       
+
+    private void set_window_state() {
         // Set the appropriate state of all components of main GUI (ie this)
         set_fid_cbox();
-        if (cb_classes.getItemCount()>0)
+        if (cb_classes.getItemCount() > 0) {
             b_go.setEnabled(true);
-        else
+        } else {
             b_go.setEnabled(false);
+        }
         this.set_sPanes();
-               
+
     }
-    
-    private void set_fid_cbox() {                                       
+
+    private void set_fid_cbox() {
         // Set the appropriate state of all components of main GUI (ie this)
         Set<Integer> fid_ids = fid_lut.keySet();
         // sort by key
@@ -116,11 +113,11 @@ public class Main_Frame extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void set_sPanes() {
-        
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -169,7 +166,7 @@ public class Main_Frame extends javax.swing.JFrame {
         });
 
         tf_rootdir.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
-        tf_rootdir.setText("/Users/josephrobinson/WORK/iris-py/pytorch-face/data/processed/lfw");
+        tf_rootdir.setText("/Users/josephrobinson/WORK/Subject_Labeler/test/images/subject1/");
         tf_rootdir.setToolTipText("");
         tf_rootdir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -338,66 +335,67 @@ public class Main_Frame extends javax.swing.JFrame {
         try {
             this.cb_classes.setSelectedIndex(this.cb_classes.getSelectedIndex() - 1);
             if (cb_classes.getSelectedIndex() > 1) {
-                this.file_csv = System.getProperty("user.dir") + "/info/" + "cluster_ids_" 
+                this.file_csv = System.getProperty("user.dir") + "/info/" + "cluster_ids_"
                         + cb_classes.getItemAt(cb_classes.getSelectedIndex()) + ".csv";
                 System.out.println(file_csv);
             }
+        } catch (IllegalArgumentException e) {
         }
-        catch(IllegalArgumentException e) { }
     }//GEN-LAST:event_b_prevActionPerformed
 
     private void b_nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_nextActionPerformed
         try {
             this.cb_classes.setSelectedIndex(this.cb_classes.getSelectedIndex() + 1);
             if (cb_classes.getSelectedIndex() > -1) {
-                this.file_csv = System.getProperty("user.dir") + "/info/" + "cluster_ids_" 
-                       + cb_classes.getItemAt(cb_classes.getSelectedIndex()) + ".csv";
+                this.file_csv = System.getProperty("user.dir") + "/info/" + "cluster_ids_"
+                        + cb_classes.getItemAt(cb_classes.getSelectedIndex()) + ".csv";
                 System.out.println(file_csv);
             }
+        } catch (IllegalArgumentException e) {
         }
-        catch (IllegalArgumentException e) { }
     }//GEN-LAST:event_b_nextActionPerformed
 
     public List<String> findFoldersInDirectory(String directoryPath) {
-    File directory = new File(directoryPath);
-	
-    FileFilter directoryFileFilter = new FileFilter() {
-        public boolean accept(File file) {
-            return file.isDirectory();
+        File directory = new File(directoryPath);
+
+        FileFilter directoryFileFilter = new FileFilter() {
+            public boolean accept(File file) {
+                return file.isDirectory();
+            }
+        };
+
+        File[] directoryListAsFile = directory.listFiles(directoryFileFilter);
+        List<String> foldersInDirectory = new ArrayList<String>(directoryListAsFile.length);
+        for (File directoryAsFile : directoryListAsFile) {
+            foldersInDirectory.add(directoryAsFile.getName());
         }
-    };
-		
-    File[] directoryListAsFile = directory.listFiles(directoryFileFilter);
-    List<String> foldersInDirectory = new ArrayList<String>(directoryListAsFile.length);
-    for (File directoryAsFile : directoryListAsFile) {
-        foldersInDirectory.add(directoryAsFile.getName());
+
+        return foldersInDirectory;
     }
 
-    return foldersInDirectory;
-}
-    public void addClasses2ComboBox(List<String> classes){
-       
+    public void addClasses2ComboBox(List<String> classes) {
+
         for (int i = 0; i < classes.size(); i++) {
-            if(configs.do_debug)
-                System.out.println(classes.get(i));
+//            if(configs.do_debug)
+//                System.out.println(classes.get(i));
             cb_classes.addItem(classes.get(i));
         }
     }
-    
+
     private void b_go_pressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_go_pressed
         // Get subdirectories in root directory and add to comboBox
         // get list, assume subdirectories are class names/ labels
         String directory = tf_rootdir.getText();
         List<String> folders = findFoldersInDirectory(directory);
-                
-        if (folders.isEmpty()) {
-            //custom title, error icon
-            JOptionPane.showMessageDialog(new JFrame(),
-                "No subdirectories found.",
-                "Loading Error",
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+
+//        if (folders.isEmpty()) {
+//            //custom title, error icon
+//            JOptionPane.showMessageDialog(new JFrame(),
+//                    "No subdirectories found.",
+//                    "Loading Error",
+//                    JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
         // sort and add to comboBox
         Collections.sort(folders);
         addClasses2ComboBox(folders);
@@ -406,22 +404,22 @@ public class Main_Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_b_go_pressed
 
     private void b_finalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_finalizeActionPerformed
-        String outpath = System.getProperty("user.dir") + "/data/" + c_subject  + 
-                "_cluster_out.csv";
+        String outpath = System.getProperty("user.dir") + "/data/" + c_subject
+                + "_cluster_out.csv";
         try {
             JFrame frame = new JFrame();
-            frame.setPreferredSize(new Dimension(200,200));
+            frame.setPreferredSize(new Dimension(200, 200));
             this.ig.finalize(outpath);
             JOptionPane.showMessageDialog(frame, "Family: " + c_subject + " clusters finalized!");
+        } catch (IOException e) {
         }
-        catch (IOException e) { }
     }//GEN-LAST:event_b_finalizeActionPerformed
 
     private void b_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_loadActionPerformed
-        
+
         String csvfile = tf_csvfile.getText();
         File cfile = new File(csvfile);
-        if(!cfile.isFile()){
+        if (!cfile.isFile()) {
 
             JFileChooser fc = new JFileChooser();
             fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
@@ -473,7 +471,6 @@ public class Main_Frame extends javax.swing.JFrame {
 
         /* Create and display the form */
 //                PropertyConfigurator.configure("log4j.properties");
-
 //        LOGGER.info("Start GUI");
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -482,8 +479,7 @@ public class Main_Frame extends javax.swing.JFrame {
         });
     }
 
- // class id for images
-
+    // class id for images
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_finalize;
@@ -522,38 +518,46 @@ public class Main_Frame extends javax.swing.JFrame {
             return (false);
         }
     };
-    
-    public void initGallery() {        
-        
-        Vector<ASampleView> grids = new Vector<>();
-        String imdir = tf_rootdir.getText() + File.separator +
-                cb_classes.getItemAt(cb_classes.getSelectedIndex()) + File.separator;
-        File dir = new File(imdir);
-        
-        File[] files = dir.listFiles(IMAGE_FILTER);
-        Vector fnames;
-        fnames = new Vector();
+
+    public ArrayList getDirectoryContents(String dir) {
+
+        File[] files = (new File(dir)).listFiles(IMAGE_FILTER);
+        ArrayList fnames;
+        fnames = new ArrayList();
         for (File file : files) {
             if (configs.do_debug) {
                 System.out.println(file);
             }
-            fnames.add(file.getName().toString());
+            fnames.add(file.getName());
         }
-        
-        
-        // Add 3 more clusters in case initial clusters < actual clusters
-        grids.add(new ClusterGrid(c_subject, 1, fnames,  imdir));
-        grids.add(new ClusterGrid(c_subject, 2, new Vector<String>(), imdir));
-        //        grids.add(new ClusterGrid(c_subject, 2, new Vector<String>()));
-
-
-        this.ig = new ImageGallery(grids, c_subject);
-        this.ig.setVisible(true);
-        
+        return fnames;
     }
-    
+
+    public void initGallery() {
+        this.c_subject = cb_classes.getItemAt(cb_classes.getSelectedIndex());
+        //        Vector<ASampleView> grids = new Vector<>();
+        String imdir = tf_rootdir.getText() + File.separator
+                + this.c_subject + File.separator;
+
+        this.panel = new GalleryPanel(this.c_subject, this.tf_csvfile.getText(), tf_rootdir.getText() + File.separator);
+
+//       this.panel.setVisible(true);
+        this.frame = new JFrame();
+        this.frame.add(this.panel);
+        this.frame.pack();
+        this.frame.setVisible(true);
+
+        // Add 3 more clusters in case initial clusters < actual clusters
+//        grids.add(new ClusterGrid(c_subject, 1, fnames,  imdir));
+//        grids.add(new ClusterGrid(c_subject, 2, new Vector<String>(), imdir));
+        //        grids.add(new ClusterGrid(c_subject, 2, new Vector<String>()));
+//
+//        this.ig = new ImageGallery(grids, c_subject);
+//        this.ig.setVisible(true);
+    }
+
     // set default focus to first sample in unknown panel
     public void setDefaultFocus(Sample samp) {
-            this.ig.setDefaultFocus(samp);
-        }
+        this.ig.setDefaultFocus(samp);
+    }
 }

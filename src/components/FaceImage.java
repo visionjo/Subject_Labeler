@@ -73,13 +73,13 @@ public class FaceImage extends JButton {
 
     private void initComponents() {
 
-        //        // set color to paint border
-        //        float hue = this.HUE_ULIMIT * this.confidence;
-        //        this.border_color = new HSLColor(hue);
+        // set color to paint border
+        float hue = this.HUE_ULIMIT * this.confidence;
+        this.border_color = new HSLColor(hue);
         
         // create and add border to image icon to represent confidence
         this.focused = BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.GREEN, this.BORDER_THICKNESS));
+                BorderFactory.createLineBorder(this.border_color.getRGB(), this.BORDER_THICKNESS));
 
         this.setIcon(new ImageIcon(this.face));
 
@@ -140,6 +140,7 @@ public class FaceImage extends JButton {
         try {
             // read the image
             img = ImageIO.read(new File(this.meta.getPath()));
+            this.face = img;
             this.isloaded = true;
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
