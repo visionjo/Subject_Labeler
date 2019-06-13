@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+//import javax.swing.GroupLayout;
+import java.awt.GridLayout;
 /**
  *
  * @author josephrobinson
@@ -21,6 +23,8 @@ public class GalleryPanel extends JPanel {
 
     // subject (or class) label
     String label;
+    
+    int NCOLS = 5;
     
     // path to metadata
     String csvpath;
@@ -46,7 +50,9 @@ public class GalleryPanel extends JPanel {
     
     final void load(){
         this.samples = SampleHandler.load(this.csvpath, this.imagedir);
-        
+        int nsamples = this.samples.size();
+        int nrows = (int) Math.ceil(nsamples/this.NCOLS);
+        this.setLayout( new GridLayout(nrows, this.NCOLS) );  // 4x3 Grid
         for (Sample sample : this.samples){
             sample.setHorizontalAlignment();
             this.add(sample.face);
