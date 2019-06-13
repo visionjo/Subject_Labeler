@@ -37,8 +37,8 @@ public class FaceImage extends JButton {
     // image-- based on hue angle, red is 0 and 180 is green (0=red, 1=green)    
     static final float HUE_ULIMIT = 180.0f;
     static final int BORDER_THICKNESS = 3;
-    static final int IMWIDTH = 75;
-    static final int IMHEIGHT = 75;
+    static final int IMWIDTH = 100;
+    static final int IMHEIGHT = 100;
     
     Image face;     // face image
     
