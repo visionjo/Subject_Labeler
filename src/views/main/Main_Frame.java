@@ -12,15 +12,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
-import utils.Configurations;
-import utils.Parse_FID_LUT;
-import utils.Parse_Face_LUT;
+import components.Configurations;
+import components.Parse_FID_LUT;
+import components.Parse_Face_LUT;
 import views.About;
 import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import utils.Sample_LUT;
+import components.Sample_LUT;
 import views.ASampleView;
 import views.ClusterGrid;
 import views.ImageGallery;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.io.FilenameFilter;
 
-import utils.Parse_Cluster_LUT;
+import components.Parse_Cluster_LUT;
 
 /**
  *
@@ -46,7 +46,7 @@ public class Main_Frame extends javax.swing.JFrame {
     public HashMap<Integer, Vector<String>>   cluster_lut;
     public Sample_LUT   sample_ids_lut; // sample ID to FID
     String c_subject; // current subjects
-    String clusters_in;
+    String file_csv;
     ImageGallery ig;
     
     //</editor-fold>
@@ -139,7 +139,7 @@ public class Main_Frame extends javax.swing.JFrame {
         b_go = new javax.swing.JButton();
         b_next = new javax.swing.JButton();
         b_prev = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        tf_csvfile = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         mn_file = new javax.swing.JMenu();
         mnu_load_database = new javax.swing.JMenuItem();
@@ -204,11 +204,11 @@ public class Main_Frame extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
-        jTextField1.setText("/Users/josephrobinson/WORK/Subject_Labeler/test/cluster_assignments.csv");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        tf_csvfile.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
+        tf_csvfile.setText("/Users/josephrobinson/WORK/Subject_Labeler/test/cluster_assignments.csv");
+        tf_csvfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                tf_csvfileActionPerformed(evt);
             }
         });
 
@@ -230,7 +230,7 @@ public class Main_Frame extends javax.swing.JFrame {
                 .addGap(100, 100, 100)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tf_rootdir)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE))
+                    .addComponent(tf_csvfile, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(b_load, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -243,7 +243,7 @@ public class Main_Frame extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_load, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_csvfile, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tf_rootdir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -338,9 +338,9 @@ public class Main_Frame extends javax.swing.JFrame {
         try {
             this.cb_classes.setSelectedIndex(this.cb_classes.getSelectedIndex() - 1);
             if (cb_classes.getSelectedIndex() > 1) {
-                this.clusters_in = System.getProperty("user.dir") + "/info/" + "cluster_ids_" 
+                this.file_csv = System.getProperty("user.dir") + "/info/" + "cluster_ids_" 
                         + cb_classes.getItemAt(cb_classes.getSelectedIndex()) + ".csv";
-                System.out.println(clusters_in);
+                System.out.println(file_csv);
             }
         }
         catch(IllegalArgumentException e) { }
@@ -350,9 +350,9 @@ public class Main_Frame extends javax.swing.JFrame {
         try {
             this.cb_classes.setSelectedIndex(this.cb_classes.getSelectedIndex() + 1);
             if (cb_classes.getSelectedIndex() > -1) {
-                this.clusters_in = System.getProperty("user.dir") + "/info/" + "cluster_ids_" 
+                this.file_csv = System.getProperty("user.dir") + "/info/" + "cluster_ids_" 
                        + cb_classes.getItemAt(cb_classes.getSelectedIndex()) + ".csv";
-                System.out.println(clusters_in);
+                System.out.println(file_csv);
             }
         }
         catch (IllegalArgumentException e) { }
@@ -418,16 +418,22 @@ public class Main_Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_b_finalizeActionPerformed
 
     private void b_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_loadActionPerformed
-        JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        fc.setDialogTitle("Import Cluster CSV File:");
-        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        if (fc.showOpenDialog(b_load) == JFileChooser.APPROVE_OPTION) {
-            //
+        
+        String csvfile = tf_csvfile.getText();
+        File cfile = new File(csvfile);
+        if(!cfile.isFile()){
+
+            JFileChooser fc = new JFileChooser();
+            fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+            fc.setDialogTitle("Import Cluster CSV File:");
+            fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            if (fc.showOpenDialog(b_load) == JFileChooser.APPROVE_OPTION) {
+                //
+            }
+            cfile = fc.getSelectedFile();
         }
-        File file = fc.getSelectedFile();
-        clusters_in = file.toString();
-        System.out.println(clusters_in);
+        file_csv = cfile.toString();
+        System.out.println(file_csv);
         System.out.println(System.getProperty("user.dir"));
     }//GEN-LAST:event_b_loadActionPerformed
 
@@ -435,9 +441,9 @@ public class Main_Frame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_rootdirActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void tf_csvfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_csvfileActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_tf_csvfileActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -488,7 +494,6 @@ public class Main_Frame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cb_classes;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JMenu mn_file;
     private javax.swing.JMenu mn_help;
     private javax.swing.JMenuItem mnu_about;
@@ -496,6 +501,7 @@ public class Main_Frame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnu_load_database;
     private javax.swing.JMenuItem mnu_quit;
     private javax.swing.JPanel p_south;
+    private javax.swing.JTextField tf_csvfile;
     private javax.swing.JTextField tf_rootdir;
     // End of variables declaration//GEN-END:variables
 
