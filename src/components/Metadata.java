@@ -31,4 +31,7 @@ public class Metadata {
     public float getConfidence(){
         return this.confidence;
     }
+    public void setCluster(int cluster){
+        this.cluster = cluster;
+    }
 }

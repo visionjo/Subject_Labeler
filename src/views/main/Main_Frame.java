@@ -535,25 +535,14 @@ public class Main_Frame extends javax.swing.JFrame {
 
     public void initGallery() {
         this.c_subject = cb_classes.getItemAt(cb_classes.getSelectedIndex());
-        //        Vector<ASampleView> grids = new Vector<>();
-        String imdir = tf_rootdir.getText() + File.separator
-                + this.c_subject + File.separator;
 
-        this.panel = new GalleryPanel(this.c_subject, this.tf_csvfile.getText(), tf_rootdir.getText() + File.separator);
+        this.panel = new GalleryPanel(this.c_subject, this.tf_csvfile.getText(), 
+                tf_rootdir.getText() + File.separator);
 
-//       this.panel.setVisible(true);
         this.frame = new JFrame();
         this.frame.add(this.panel);
         this.frame.pack();
         this.frame.setVisible(true);
-
-        // Add 3 more clusters in case initial clusters < actual clusters
-//        grids.add(new ClusterGrid(c_subject, 1, fnames,  imdir));
-//        grids.add(new ClusterGrid(c_subject, 2, new Vector<String>(), imdir));
-        //        grids.add(new ClusterGrid(c_subject, 2, new Vector<String>()));
-//
-//        this.ig = new ImageGallery(grids, c_subject);
-//        this.ig.setVisible(true);
     }
 
     // set default focus to first sample in unknown panel
