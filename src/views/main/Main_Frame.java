@@ -12,15 +12,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
-import components.Configurations;
+import old.Configurations;
 import components.GalleryPanel;
-import components.Parse_FID_LUT;
-import components.Parse_Face_LUT;
+import old.Parse_FID_LUT;
+import old.Parse_Face_LUT;
 import views.About;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import components.Sample_LUT;
+import old.Sample_LUT;
 import views.ImageGallery;
 import views.Sample;
 import java.io.FileFilter;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.io.FilenameFilter;
 
-import components.Parse_Cluster_LUT;
+import old.Parse_Cluster_LUT;
 
 /**
  *
@@ -150,7 +150,7 @@ public class Main_Frame extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("File Settings"));
 
         b_finalize.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        b_finalize.setText("Finalize");
+        b_finalize.setText("Done");
         b_finalize.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 b_finalizeActionPerformed(evt);
@@ -166,7 +166,7 @@ public class Main_Frame extends javax.swing.JFrame {
         });
 
         tf_rootdir.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
-        tf_rootdir.setText("/Users/josephrobinson/WORK/Subject_Labeler/test/images/subject1/");
+        tf_rootdir.setText("test/images/subject1/");
         tf_rootdir.setToolTipText("");
         tf_rootdir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,7 +202,7 @@ public class Main_Frame extends javax.swing.JFrame {
         });
 
         tf_csvfile.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
-        tf_csvfile.setText("/Users/josephrobinson/WORK/Subject_Labeler/test/cluster_assignments.csv");
+        tf_csvfile.setText("test/cluster_assignments.csv");
         tf_csvfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_csvfileActionPerformed(evt);
@@ -214,15 +214,15 @@ public class Main_Frame extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(100, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(b_prev)
                 .addGap(80, 80, 80)
                 .addComponent(cb_classes, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64)
                 .addComponent(b_next)
-                .addGap(171, 171, 171)
-                .addComponent(b_finalize, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45))
+                .addGap(59, 59, 59)
+                .addComponent(b_finalize, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -232,7 +232,7 @@ public class Main_Frame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(b_load, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(b_go, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
