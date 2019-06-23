@@ -14,13 +14,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import old.Configurations;
 import components.GalleryPanel;
-import old.Parse_FID_LUT;
-import old.Parse_Face_LUT;
 import views.About;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import old.Sample_LUT;
 import views.ImageGallery;
 import views.Sample;
 import java.io.FileFilter;
@@ -29,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.io.FilenameFilter;
 
-import old.Parse_Cluster_LUT;
 
 /**
  *
@@ -42,7 +38,6 @@ public class Main_Frame extends javax.swing.JFrame {
     public HashMap<Integer, String> face_lut;
     public HashMap<Integer, String> fid_lut;
     public HashMap<Integer, ArrayList<String>> cluster_lut;
-    public Sample_LUT sample_ids_lut; // sample ID to FID
     String c_subject; // current subjects
     String file_csv;
     ImageGallery ig;
@@ -66,55 +61,14 @@ public class Main_Frame extends javax.swing.JFrame {
     }
     //</editor-fold>
 
-    /**
-     * Method to read in both FID and FaceID LUTs.
-     */
-    private void get_luts() {
-        Parse_Face_LUT pface = new Parse_Face_LUT(configs.f_face_lut, configs.do_debug);
-        pface.readLUT();
-        face_lut = pface.getLUT();
-
-        Parse_FID_LUT pfid = new Parse_FID_LUT(configs.f_fid_lut, configs.do_debug);
-        pfid.readLUT();
-        fid_lut = pfid.getLUT();
-
-        Parse_Cluster_LUT pcluster = new Parse_Cluster_LUT(configs.f_cluster_ids,
-                configs.do_debug);
-        pcluster.readLUT();
-        cluster_lut = pcluster.getLUT();
-
-        set_window_state();
-    }
 
     private void set_window_state() {
         // Set the appropriate state of all components of main GUI (ie this)
-        set_fid_cbox();
         if (cb_classes.getItemCount() > 0) {
             b_go.setEnabled(true);
         } else {
             b_go.setEnabled(false);
         }
-        this.set_sPanes();
-
-    }
-
-    private void set_fid_cbox() {
-        // Set the appropriate state of all components of main GUI (ie this)
-        Set<Integer> fid_ids = fid_lut.keySet();
-        // sort by key
-        TreeSet sortedSet = new TreeSet<>(fid_ids);
-
-        for (Iterator<Integer> it = sortedSet.iterator(); it.hasNext();) {
-            int f = it.next();
-            String fid = fid_lut.get(f);
-            cb_classes.addItem(fid);
-            if (configs.do_debug) {
-                System.out.println("Adding " + fid + " to list menu");
-            }
-        }
-    }
-
-    private void set_sPanes() {
 
     }
 
