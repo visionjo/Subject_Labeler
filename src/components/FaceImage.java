@@ -42,11 +42,10 @@ public class FaceImage extends JButton {
     static final int BORDER_THICKNESS = 3;
     static final int IMWIDTH = 100;
     static final int IMHEIGHT = 100;
-    
+
     Image face;     // face image
-    
+
     // image metadatas
-    
     Metadata meta;
     // sample name
     String impath;
@@ -68,27 +67,22 @@ public class FaceImage extends JButton {
 
     FaceImage(Metadata meta) {
         this.meta = meta;
-        if(this.meta.getCluster() == 1)
-        {
+        if (this.meta.getCluster() == 1) {
             this.border_color = Color.GREEN;
-        }
-        else
-        {
+        } else {
             this.border_color = Color.RED;
             //            outline = this.border_color.getRGB();
         }
         this.loadImage();
         this.initComponents();
-        this.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-            // display/center the jdialog when the button is pressed
-            int ncluster = Math.abs(FaceImage.this.meta.getCluster() - 1);
-            FaceImage.this.meta.setCluster(ncluster);
-            FaceImage.this.initComponents();
-      }
-    });
+        this.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // display/center the jdialog when the button is pressed
+                int ncluster = Math.abs(FaceImage.this.meta.getCluster() - 1);
+                FaceImage.this.meta.setCluster(ncluster);
+                FaceImage.this.initComponents();
+            }
+        });
 
     }
 
@@ -151,45 +145,41 @@ public class FaceImage extends JButton {
         this.scaleImage();
     }
 
-
-
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        drawBorder(g); 
+        drawBorder(g);
 
         drawWhiteSpace(g);
-        
+
 //        g.drawString(Integer.toString(this.cluster_id) , 100, 100);
     }
     //drawWhiteSpace method will draw a white rectangle which start at the bottom-left corner -6 pixel, and go to the bottom rightcorner
 
     private void drawWhiteSpace(Graphics g) {
         int x1 = this.getSize().width - 15;
-        int y1 = this.getSize().height-15;
+        int y1 = this.getSize().height - 15;
         int x2 = this.getSize().width;
         int y2 = this.getSize().height;
         g.setColor(Color.WHITE);
-        g.fillRect(x1, y1, x2, y2); 
+        g.fillRect(x1, y1, x2, y2);
         g.setColor(Color.BLACK);
         g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-        g.drawString(Integer.toString(this.meta.getCluster()) , (int)(x2-10), (int)(y2-3));
+        g.drawString(Integer.toString(this.meta.getCluster()), (int) (x2 - 10), (int) (y2 - 3));
         g.setColor(Color.BLACK);
 //        g.dispose();
-    }   
+    }
 
     //however the border was not fine, so i had to remove it and to draw it myself by drawing it from the top-left corner to the top-right corner of the white space
-
     private void drawBorder(Graphics g) {
         int x1 = 0;
         int y1 = 0;
-        int x2 = this.getSize().width-this.BORDER_THICKNESS;
-        int y2 = this.getSize().height-this.BORDER_THICKNESS;
+        int x2 = this.getSize().width - this.BORDER_THICKNESS;
+        int y2 = this.getSize().height - this.BORDER_THICKNESS;
         g.setColor(this.border_color);
-        for(int i = 1; i <= this.BORDER_THICKNESS; i++)
-        {
-            g.drawRect(x1 + i, y1 + i, x2, y2 + i); 
-            g.drawRect(x1 + i, y1 + i, x2 + i, y2); 
-            g.drawRect(x1 + i, y1 + i, x2 + i, y2 + i); 
+        for (int i = 1; i <= this.BORDER_THICKNESS; i++) {
+            g.drawRect(x1 + i, y1 + i, x2, y2 + i);
+            g.drawRect(x1 + i, y1 + i, x2 + i, y2);
+            g.drawRect(x1 + i, y1 + i, x2 + i, y2 + i);
         }
     }
 }

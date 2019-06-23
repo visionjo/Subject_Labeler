@@ -9,10 +9,6 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
-import old.Configurations;
 import components.GalleryPanel;
 import views.About;
 import javax.swing.JFileChooser;
@@ -25,7 +21,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.io.FilenameFilter;
-
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -34,10 +30,10 @@ import java.io.FilenameFilter;
 public class Main_Frame extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Global Vars">
-    Configurations configs;
     public HashMap<Integer, String> face_lut;
     public HashMap<Integer, String> fid_lut;
     public HashMap<Integer, ArrayList<String>> cluster_lut;
+    Boolean do_debug = true;
     String c_subject; // current subjects
     String file_csv;
     ImageGallery ig;
@@ -50,7 +46,6 @@ public class Main_Frame extends javax.swing.JFrame {
      */
     // <editor-fold defaultstate="collapsed" desc="Constructor">
     public Main_Frame() {
-        configs = new Configurations();
         initComponents();
 //        get_luts();s
 
@@ -60,7 +55,6 @@ public class Main_Frame extends javax.swing.JFrame {
 
     }
     //</editor-fold>
-
 
     private void set_window_state() {
         // Set the appropriate state of all components of main GUI (ie this)
@@ -434,21 +428,20 @@ public class Main_Frame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main_Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main_Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main_Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main_Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | 
+                IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Main_Frame.class.getName()).
+                    log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+
         //</editor-fold>
 
         /* Create and display the form */
 //                PropertyConfigurator.configure("log4j.properties");
 //        LOGGER.info("Start GUI");
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Main_Frame().setVisible(true);
             }
@@ -502,7 +495,7 @@ public class Main_Frame extends javax.swing.JFrame {
         ArrayList fnames;
         fnames = new ArrayList();
         for (File file : files) {
-            if (configs.do_debug) {
+            if (do_debug) {
                 System.out.println(file);
             }
             fnames.add(file.getName());
@@ -513,7 +506,7 @@ public class Main_Frame extends javax.swing.JFrame {
     public void initGallery() {
         this.c_subject = cb_classes.getItemAt(cb_classes.getSelectedIndex());
 
-        this.panel = new GalleryPanel(this.c_subject, this.tf_csvfile.getText(), 
+        this.panel = new GalleryPanel(this.c_subject, this.tf_csvfile.getText(),
                 tf_rootdir.getText() + File.separator);
 
         this.frame = new JFrame();
