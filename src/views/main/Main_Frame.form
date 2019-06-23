@@ -92,7 +92,10 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="jPanel2" min="-2" pref="695" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -119,28 +122,28 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                      <Component id="jLabel1" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="b_prev" linkSize="5" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="b_prev" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
                       <Component id="cb_classes" min="-2" pref="133" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
-                      <Component id="b_next" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="b_next" linkSize="5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                       <Component id="b_finalize" min="-2" pref="114" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="109" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="tf_rootdir" alignment="2" min="-2" pref="541" max="-2" attributes="0"/>
-                          <Component id="tf_csvfile" alignment="2" max="32767" attributes="0"/>
+                          <Component id="tf_rootdir" linkSize="1" alignment="2" min="-2" pref="557" max="-2" attributes="0"/>
+                          <Component id="tf_csvfile" linkSize="1" alignment="2" min="-2" pref="582" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="b_load" max="32767" attributes="0"/>
-                          <Component id="b_go" max="32767" attributes="0"/>
+                          <Component id="b_load" linkSize="3" max="32767" attributes="0"/>
+                          <Component id="b_go" linkSize="3" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -151,21 +154,21 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="b_load" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                          <Component id="tf_csvfile" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="b_load" linkSize="4" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="tf_csvfile" linkSize="2" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="tf_rootdir" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-                          <Component id="b_go" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="tf_rootdir" linkSize="2" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="b_go" linkSize="4" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cb_classes" alignment="3" min="-2" pref="51" max="-2" attributes="0"/>
-                          <Component id="b_next" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
-                          <Component id="b_prev" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                          <Component id="b_next" linkSize="6" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                          <Component id="b_prev" linkSize="6" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                           <Component id="b_finalize" alignment="3" max="32767" attributes="0"/>
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
